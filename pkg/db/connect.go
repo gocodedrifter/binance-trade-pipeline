@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"time"
 
@@ -11,7 +10,7 @@ import (
 )
 
 const (
-	baseMongoURI = "mongodb://mongo"
+	baseMongoURI = "mongodb://127.0.0.1:27017"
 	document     = "market_data"
 )
 
@@ -40,7 +39,6 @@ func GetDB() *Config {
 func loadDBConfig() *Config {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(getMongoURI()))
-	fmt.Println(getMongoURI())
 	if err != nil {
 		panic(err.Error())
 	}
