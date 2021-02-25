@@ -1,0 +1,29 @@
+version: '3'
+
+# Define services
+services:
+
+  # App Service
+  app:
+    # Configuration for building the docker image for the service
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: Dockerfile
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    depends_on: 
+      - mongo # This service depends on redis. Start that first.
+    environment:
+      - MONGO_URL="mongo" 
+
+  mongo:
+    image: mongo:4.2
+    container_name: mongo
+    command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27107"]
+    volumes:
+      - ./data/mongo:/data/db
+    ports:
+      - 27107:27107
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'my-replica-set',members:[{_id:0,host:\"mongo:27107\"}]}).ok || rs.status().ok" | mongo --port 27107 --quiet) -eq 1
+      interval: 10s
