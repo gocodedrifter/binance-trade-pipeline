@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	baseMongoURI = "mongodb://127.0.0.1:27017"
+	baseMongoURI = "mongodb://mongo"
 	document     = "market_data"
 )
 
