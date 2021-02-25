@@ -19,11 +19,11 @@ services:
   mongo:
     image: mongo:4.2
     container_name: mongo
-    command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27107"]
+    command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27017"]
     volumes:
       - ./data/mongo:/data/db
     ports:
-      - 27107:27107
+      - 27017:27017
     healthcheck:
-      test: test $$(echo "rs.initiate({_id:'my-replica-set',members:[{_id:0,host:\"mongo:27107\"}]}).ok || rs.status().ok" | mongo --port 27107 --quiet) -eq 1
+      test: test $$(echo "rs.initiate({_id:'my-replica-set',members:[{_id:0,host:\"mongo:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
       interval: 10s
